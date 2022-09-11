@@ -38,7 +38,6 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.lime,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Login"),
@@ -155,6 +154,7 @@ class LoginScreenState extends State<LoginScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          icon: const Icon(Icons.warning_amber_rounded),
           title: Text(
             title,
             style: const TextStyle(fontSize: 24),

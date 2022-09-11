@@ -44,7 +44,6 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.lime,
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Register New Account"),

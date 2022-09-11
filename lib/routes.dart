@@ -27,9 +27,9 @@ class MyRouter {
           path: '/',
           redirect: (state) {
             if (loginState.loginState == ApplicationLoginState.loggedIn) {
-            return state.namedLocation(HOME);
-          }
-          return state.namedLocation(LOGIN);
+              return state.namedLocation(HOME);
+            }
+            return state.namedLocation(LOGIN);
           }),
       GoRoute(
         name: HOME,
@@ -49,12 +49,19 @@ class MyRouter {
       ),
       GoRoute(
         name: REGISTER,
-        path: '/create-account',
+        path: '/register',
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
           child: const RegisterScreen(),
         ),
       ),
     ],
+    redirect: (state) {
+      if (state.subloc == '/home' &&
+          loginState.loginState == ApplicationLoginState.loggedOut) {
+        return state.namedLocation(LOGIN);
+      }
+      return null;
+    },
   );
 }
