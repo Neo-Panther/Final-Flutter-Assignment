@@ -37,87 +37,91 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Login"),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Card(
-            elevation: 2,
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-              child: Form(
-                key: _formKey,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 240.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.mail_outline_rounded),
-                          labelText: "Email",
-                          focusedBorder: OutlineInputBorder(),
-                        ),
-                        autofillHints: const [
-                          AutofillHints.email,
-                        ],
-                        validator: (value) {
-                          if (value == null || (!_validEmail.hasMatch(value))) {
-                            return 'Enter a valid Email Address';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          icon: const Icon(Icons.lock),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _hidePassword = !_hidePassword;
-                              });
-                            },
-                            icon: (_hidePassword)
-                                ? const Icon(Icons.visibility_off)
-                                : const Icon(Icons.visibility),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("Login"),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Card(
+              elevation: 2,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+                child: Form(
+                  key: _formKey,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 240.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            icon: Icon(Icons.mail_outline_rounded),
+                            labelText: "Email",
+                            focusedBorder: OutlineInputBorder(),
                           ),
-                          labelText: "Password",
-                          focusedBorder: const OutlineInputBorder(),
+                          autofillHints: const [
+                            AutofillHints.email,
+                          ],
+                          validator: (value) {
+                            if (value == null ||
+                                (!_validEmail.hasMatch(value))) {
+                              return 'Enter a valid Email Address';
+                            }
+                            return null;
+                          },
                         ),
-                        obscureText: _hidePassword,
-                        autofillHints: const [AutofillHints.password],
-                        validator: (value) {
-                          if (value == null || value.length < 8) {
-                            return 'Password is atleast 8 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            icon: const Icon(Icons.lock),
+                            suffixIcon: IconButton(
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _login();
-                                }
+                                setState(() {
+                                  _hidePassword = !_hidePassword;
+                                });
                               },
-                              child: const Text("Login")),
-                          ElevatedButton(
-                              onPressed: () {
-                                _toRegisterPage();
-                              },
-                              child: const Text("Register New User")),
-                        ],
-                      ),
-                    ],
+                              icon: (_hidePassword)
+                                  ? const Icon(Icons.visibility_off)
+                                  : const Icon(Icons.visibility),
+                            ),
+                            labelText: "Password",
+                            focusedBorder: const OutlineInputBorder(),
+                          ),
+                          obscureText: _hidePassword,
+                          autofillHints: const [AutofillHints.password],
+                          validator: (value) {
+                            if (value == null || value.length < 8) {
+                              return 'Password is atleast 8 characters';
+                            }
+                            return null;
+                          },
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _login();
+                                  }
+                                },
+                                child: const Text("Login")),
+                            ElevatedButton(
+                                onPressed: () {
+                                  _toRegisterPage();
+                                },
+                                child: const Text("Register New User")),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

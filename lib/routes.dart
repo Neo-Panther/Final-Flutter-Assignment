@@ -17,8 +17,6 @@ class MyRouter {
   late final router = GoRouter(
     redirectLimit: 10,
     refreshListenable: loginState,
-    // Remove below b4 final
-    debugLogDiagnostics: true,
     urlPathStrategy: UrlPathStrategy.path,
 
     routes: [

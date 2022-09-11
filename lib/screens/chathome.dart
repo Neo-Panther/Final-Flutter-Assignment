@@ -28,86 +28,91 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
-            appBar: AppBar(
-              title: Text(widget.title),
-              actions: [
-                IconButton(
-                    onPressed:
-                        Provider.of<DarkThemeProvider>(context, listen: false)
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: SafeArea(
+            child: Scaffold(
+                backgroundColor: Theme.of(context).backgroundColor,
+                appBar: AppBar(
+                  title: Text(widget.title),
+                  actions: [
+                    IconButton(
+                        onPressed: Provider.of<DarkThemeProvider>(context,
+                                listen: false)
                             .switchTheme,
-                    icon: Icon(
-                        (Provider.of<DarkThemeProvider>(context, listen: true)
+                        icon: Icon((Provider.of<DarkThemeProvider>(context,
+                                    listen: true)
                                 .darkTheme)
                             ? Icons.dark_mode_rounded
                             : Icons.light_mode_rounded)),
-                PopupMenuButton(
-                  itemBuilder: (context) {
-                    return [
-                      const PopupMenuItem(
-                        value: 0,
-                        child: Text("Signout"),
-                      ),
-                      const PopupMenuItem(
-                        value: 1,
-                        child: Text("Clear All Messages"),
-                      ),
-                      const PopupMenuItem(
-                        value: 2,
-                        child: Text("Restore All messages"),
-                      ),
-                    ];
-                  },
-                  onSelected: (value) {
-                    switch (value) {
-                      case 0:
-                        Provider.of<LoginState>(context, listen: false)
-                            .signOut();
-                        context.goNamed(MyRouter.LOGIN);
-                        break;
-                      case 1:
-                        Provider.of<MessageHolder>(context, listen: false)
-                            .setClearTime();
-                        break;
-                      case 2:
-                        Provider.of<MessageHolder>(context, listen: false)
-                            .resetClearTime();
-                        break;
-                    }
-                  },
-                )
-              ],
-            ),
-            body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                      child: Stack(children: [
-                    Consumer<MessageHolder>(
-                        builder: ((context, messageHolder, child) =>
-                            ListView.builder(
-                                controller: _scrollController,
-                                itemCount: messageHolder.chatMessages.length,
-                                itemBuilder: (context, index) {
-                                  return ChatBox(
-                                      isSameUser: messageHolder
-                                              .chatMessages[index].username ==
-                                          FirebaseAuth.instance.currentUser!
-                                              .displayName,
-                                      chat: messageHolder.chatMessages[index]);
-                                }))),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        onPressed: _scrollToBottom,
-                        child: const Icon(Icons.arrow_downward_rounded),
-                      ),
+                    PopupMenuButton(
+                      itemBuilder: (context) {
+                        return [
+                          const PopupMenuItem(
+                            value: 0,
+                            child: Text("Signout"),
+                          ),
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Text("Clear All Messages"),
+                          ),
+                          const PopupMenuItem(
+                            value: 2,
+                            child: Text("Restore All messages"),
+                          ),
+                        ];
+                      },
+                      onSelected: (value) {
+                        switch (value) {
+                          case 0:
+                            Provider.of<LoginState>(context, listen: false)
+                                .signOut();
+                            context.goNamed(MyRouter.LOGIN);
+                            break;
+                          case 1:
+                            Provider.of<MessageHolder>(context, listen: false)
+                                .setClearTime();
+                            break;
+                          case 2:
+                            Provider.of<MessageHolder>(context, listen: false)
+                                .resetClearTime();
+                            break;
+                        }
+                      },
                     )
-                  ])),
-                  const SendForm(),
-                ])));
+                  ],
+                ),
+                body: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                          child: Stack(children: [
+                        Consumer<MessageHolder>(
+                            builder: ((context, messageHolder, child) =>
+                                ListView.builder(
+                                    controller: _scrollController,
+                                    itemCount:
+                                        messageHolder.chatMessages.length,
+                                    itemBuilder: (context, index) {
+                                      return ChatBox(
+                                          isSameUser: messageHolder
+                                                  .chatMessages[index]
+                                                  .username ==
+                                              FirebaseAuth.instance.currentUser!
+                                                  .displayName,
+                                          chat: messageHolder
+                                              .chatMessages[index]);
+                                    }))),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: FloatingActionButton(
+                            onPressed: _scrollToBottom,
+                            child: const Icon(Icons.arrow_downward_rounded),
+                          ),
+                        )
+                      ])),
+                      const SendForm(),
+                    ]))));
   }
 
   void _scrollToBottom() {
